@@ -14,8 +14,21 @@ class CreateMessagesTable extends Migration
     public function up()
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+     
+            // contact information
+            $table->integer('contact_id');
+            $table->string('contact_number', 30);
+            $table->string('contact_name', 100);
+     
+            // message information
+            $table->string('device_id', 30);
+            $table->text('message');
+            $table->enum('type', ['inbox', 'outbox', 'draft'])->default('outbox');
+            $table->dateTime('expired_at');
             $table->timestamps();
+     
+            $table->index(['contact_name', 'contact_number']);
         });
     }
 
